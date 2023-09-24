@@ -12,7 +12,7 @@ public class SettingsPanel extends JPanel {
     private JSpinner riverWidth = new JSpinner();
     private JSlider difficultTerrainFreq = new JSlider(0, 1000, 0);
     private JSpinner difficultTerrainRadius = new JSpinner();
-    private JSlider areaFreq = new JSlider();
+    private JSlider areaFreq = new JSlider(0, 1000, 0);
     private JSpinner areaMaxRadius = new JSpinner();
     private JSpinner areaAmountObject = new JSpinner();
     private int sumFreq = groundFreq.getValue();
@@ -25,16 +25,15 @@ public class SettingsPanel extends JPanel {
 
         // Задание размеров поля
         panel.add(new JLabel("Zone"));
-        SpinnerNumberModel model = new SpinnerNumberModel(5, 5, 35, 1);
-        heightLandscape.setModel(model);
-        weightLandscape.setModel(model);
+        heightLandscape.setModel(new SpinnerNumberModel(5, 5, 35, 1));
+        weightLandscape.setModel(new SpinnerNumberModel(5, 5, 35, 1));
         heightLandscape.addChangeListener((e) -> painter.drawGrid((Integer) heightLandscape.getValue(), (Integer) weightLandscape.getValue()));
         weightLandscape.addChangeListener((e) -> painter.drawGrid((Integer) heightLandscape.getValue(), (Integer) weightLandscape.getValue()));
         panel.add(heightLandscape);
         panel.add(weightLandscape);
 
         // Частота появления свободных полей
-        groundFreq.setMajorTickSpacing(10);
+        groundFreq.setMajorTickSpacing(100);
         groundFreq.setPaintTicks(true);
         groundFreq.addChangeListener(e -> balanceFreq(groundFreq));
         panel.add(new JLabel("Ground"));

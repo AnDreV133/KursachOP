@@ -10,7 +10,7 @@ import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import org.apache.batik.dom.svg.SVGDOMImplementation;
+import org.apache.batik.anim.dom.SVGDOMImplementation;
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
@@ -20,7 +20,8 @@ public class PainterLandscape {
         System.out.println("help");
     }
 
-    public void drawGrid(Integer height_, Integer weight_) {
+    public void drawGrid(Integer heightBySquare, Integer weightBySquare) {
+        System.out.println("drawGrid");
         int size = 10; // размер сетки
         int cellSize = 20; // размер ячейки
         int width = size * cellSize; // ширина svg-изображения
@@ -45,9 +46,13 @@ public class PainterLandscape {
         }
 
         // сохраняем SVG-изображение в файл
-        FileWriter writer = new FileWriter(new File("grid.svg"));
-        g2d.stream(svgRoot, writer);
-        writer.close();
+        try {
+            FileWriter writer = new FileWriter("src\\main\\java\\org\\example\\grid.svg");
+            g2d.stream(svgRoot, writer);
+            writer.close();
+        } catch (IOException e) {
+            System.err.println("Ошибка записи файла");
+        }
     }
 
     public void generate(Integer heightLandscape,
