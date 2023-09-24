@@ -5,15 +5,15 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class ImagePanel extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener {
-    private final ImageIcon image; // изображение
+    private ImageIcon imageIcon = new ImageIcon(); // изображение
     private int x, y; // координаты изображения
     private int xMouse, yMouse; // координаты изображения
     private double scale = 1.0; // масштабирование
 
-    public ImagePanel(ImageIcon image) {
-        this.image = image;
-        x = (Main.WIDTH * 2 / 3 - image.getIconWidth()) / 2; // начальные координаты изображения по центру панели
-        y = (Main.HEIGHT - image.getIconHeight()) / 2;
+    public ImagePanel() {
+        new PainterLandscape(this, imageIcon);
+        x = (Main.WIDTH_IMAGE - imageIcon.getIconWidth()) / 2; // начальные координаты изображения по центру панели
+        y = (Main.HEIGHT - imageIcon.getIconHeight()) / 2;
         addMouseListener(this); // добавляем слушателей событий мыши
         addMouseMotionListener(this);
         addMouseWheelListener(this);
@@ -23,7 +23,7 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g; // используем 2D графику
         g2d.scale(scale, scale); // масштабируем изображение
-        g2d.drawImage(image.getImage(), (int) (x / scale), (int) (y / scale), this); // отрисовываем изображение
+        g2d.drawImage(imageIcon.getImage(), (int) (x / scale), (int) (y / scale), this); // отрисовываем изображение
     }
 
     public void mouseClicked(MouseEvent e) {

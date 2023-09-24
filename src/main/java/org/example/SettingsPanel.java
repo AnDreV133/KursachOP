@@ -7,7 +7,8 @@ public class SettingsPanel extends JPanel {
     private JSpinner heightLandscape = new JSpinner();
     private JSpinner weightLandscape = new JSpinner();
     private JSlider groundFreq = new JSlider(0, 1000, 1000);
-    private JSlider coverFreq = new JSlider(0, 1000, 0);
+    private JSlider rectangleCoverFreq = new JSlider(0, 1000, 0);
+    private JSlider circleCoverFreq = new JSlider(0, 1000, 0);
     private JSpinner riverAmount = new JSpinner();
     private JSpinner riverWidth = new JSpinner();
     private JSlider difficultTerrainFreq = new JSlider(0, 1000, 0);
@@ -17,18 +18,17 @@ public class SettingsPanel extends JPanel {
     private JSpinner areaAmountObject = new JSpinner();
     private int sumFreq = groundFreq.getValue();
 
-    PainterLandscape painter = new PainterLandscape();
-
     public SettingsPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setSize(Main.WIDTH_SETTINGS, Main.HEIGHT);
 
         // Задание размеров поля
         panel.add(new JLabel("Zone"));
         heightLandscape.setModel(new SpinnerNumberModel(5, 5, 35, 1));
         weightLandscape.setModel(new SpinnerNumberModel(5, 5, 35, 1));
-        heightLandscape.addChangeListener((e) -> painter.drawGrid((Integer) heightLandscape.getValue(), (Integer) weightLandscape.getValue()));
-        weightLandscape.addChangeListener((e) -> painter.drawGrid((Integer) heightLandscape.getValue(), (Integer) weightLandscape.getValue()));
+        heightLandscape.addChangeListener((e) -> PainterLandscape.drawGrid((Integer) heightLandscape.getValue(), (Integer) weightLandscape.getValue()));
+        weightLandscape.addChangeListener((e) -> PainterLandscape.drawGrid((Integer) heightLandscape.getValue(), (Integer) weightLandscape.getValue()));
         panel.add(heightLandscape);
         panel.add(weightLandscape);
 
@@ -40,9 +40,14 @@ public class SettingsPanel extends JPanel {
         panel.add(groundFreq);
 
         // Частота появления укрытий
-        coverFreq.addChangeListener(e -> balanceFreq(coverFreq));
-        panel.add(new JLabel("Cover"));
-        panel.add(coverFreq);
+        rectangleCoverFreq.addChangeListener(e -> balanceFreq(rectangleCoverFreq));
+        panel.add(new JLabel("Rectangle Cover"));
+        panel.add(rectangleCoverFreq);
+
+        // Частота появления укрытий
+        circleCoverFreq.addChangeListener(e -> balanceFreq(circleCoverFreq));
+        panel.add(new JLabel("Circle Cover"));
+        panel.add(circleCoverFreq);
 
         // Частота появления областей
         areaFreq.addChangeListener(e -> balanceFreq(areaFreq));
@@ -74,18 +79,19 @@ public class SettingsPanel extends JPanel {
         btnGenerate.setAction(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                painter.generate(
-                    (Integer) heightLandscape.getValue(),
-                    (Integer) weightLandscape.getValue(),
-                    groundFreq.getValue() / 1000f,
-                    coverFreq.getValue() / 1000f,
-                    areaFreq.getValue() / 1000f,
-                    (Integer) areaMaxRadius.getValue(),
-                    (Integer) areaAmountObject.getValue(),
-                    (Integer) riverAmount.getValue(),
-                    (Integer) riverWidth.getValue(),
-                    difficultTerrainFreq.getValue() / 1000f,
-                    (Integer) difficultTerrainRadius.getValue());
+                PainterLandscape.generate(
+                        (Integer) heightLandscape.getValue(),
+                        (Integer) weightLandscape.getValue(),
+                        groundFreq.getValue() / 1000f,
+                        rectangleCoverFreq.getValue() / 1000f,
+                        circleCoverFreq.getValue() / 1000f,
+                        areaFreq.getValue() / 1000f,
+                        (Integer) areaMaxRadius.getValue(),
+                        (Integer) areaAmountObject.getValue(),
+                        (Integer) riverAmount.getValue(),
+                        (Integer) riverWidth.getValue(),
+                        difficultTerrainFreq.getValue() / 1000f,
+                        (Integer) difficultTerrainRadius.getValue());
             }
         });
         btnGenerate.setText("Generate");
@@ -96,19 +102,23 @@ public class SettingsPanel extends JPanel {
     }
 
     public void balanceFreq(JSlider slider) {
-        sumFreq = groundFreq.getValue() + coverFreq.getValue()
-            + difficultTerrainFreq.getValue() + areaFreq.getValue();
+        sumFreq = groundFreq.getValue()
+                + rectangleCoverFreq.getValue()
+                + circleCoverFreq.getValue()
+                + areaFreq.getValue()
+                + difficultTerrainFreq.getValue();
 
         if (sumFreq <= 1000)
             return;
 
-        int delta = (sumFreq - 1000) / 4;
+        int delta = (sumFreq - 1000) / 5;
 
         if (!slider.equals(groundFreq)) groundFreq.setValue(groundFreq.getValue() - delta);
-        if (!slider.equals(coverFreq)) coverFreq.setValue(coverFreq.getValue() - delta);
+        if (!slider.equals(rectangleCoverFreq)) rectangleCoverFreq.setValue(rectangleCoverFreq.getValue() - delta);
+        if (!slider.equals(circleCoverFreq)) circleCoverFreq.setValue(circleCoverFreq.getValue() - delta);
+        if (!slider.equals(areaFreq)) areaFreq.setValue(areaFreq.getValue() - delta);
         if (!slider.equals(difficultTerrainFreq))
             difficultTerrainFreq.setValue(difficultTerrainFreq.getValue() - delta);
-        if (!slider.equals(areaFreq)) areaFreq.setValue(areaFreq.getValue() - delta);
 
         System.out.println(sumFreq);
     }
