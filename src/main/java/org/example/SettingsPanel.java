@@ -4,8 +4,8 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 
 public class SettingsPanel extends JPanel {
+    private JSpinner widthLandscape = new JSpinner();
     private JSpinner heightLandscape = new JSpinner();
-    private JSpinner weightLandscape = new JSpinner();
     private JSlider groundFreq = new JSlider(0, 1000, 1000);
     private JSlider rectangleCoverFreq = new JSlider(0, 1000, 0);
     private JSlider circleCoverFreq = new JSlider(0, 1000, 0);
@@ -25,12 +25,12 @@ public class SettingsPanel extends JPanel {
 
         // Задание размеров поля
         panel.add(new JLabel("Zone"));
+        widthLandscape.setModel(new SpinnerNumberModel(5, 5, 35, 1));
         heightLandscape.setModel(new SpinnerNumberModel(5, 5, 35, 1));
-        weightLandscape.setModel(new SpinnerNumberModel(5, 5, 35, 1));
-        heightLandscape.addChangeListener((e) -> PainterLandscape.drawGrid((Integer) heightLandscape.getValue(), (Integer) weightLandscape.getValue()));
-        weightLandscape.addChangeListener((e) -> PainterLandscape.drawGrid((Integer) heightLandscape.getValue(), (Integer) weightLandscape.getValue()));
+        widthLandscape.addChangeListener((e) -> PainterLandscape.drawGrid((Integer) widthLandscape.getValue(), (Integer) heightLandscape.getValue()));
+        heightLandscape.addChangeListener((e) -> PainterLandscape.drawGrid((Integer) widthLandscape.getValue(), (Integer) heightLandscape.getValue()));
+        panel.add(widthLandscape);
         panel.add(heightLandscape);
-        panel.add(weightLandscape);
 
         // Частота появления свободных полей
         groundFreq.setMajorTickSpacing(100);
@@ -80,8 +80,8 @@ public class SettingsPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 PainterLandscape.generate(
+                        (Integer) widthLandscape.getValue(),
                         (Integer) heightLandscape.getValue(),
-                        (Integer) weightLandscape.getValue(),
                         groundFreq.getValue() / 1000f,
                         rectangleCoverFreq.getValue() / 1000f,
                         circleCoverFreq.getValue() / 1000f,

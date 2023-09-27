@@ -10,15 +10,10 @@ public class Cell extends Asset {
     }
 
     @Override
-    public BufferedImage getImage() {
-        BufferedImage image = new BufferedImage(getSideSize(), getSideSize(), BufferedImage.TYPE_INT_RGB);
-        Graphics2D g = image.createGraphics();
-
+    public void drawMapObject() {
         g.setColor(Color.white);
         g.fillRect(0, 0, image.getWidth(), image.getHeight());
         g.setColor(Color.gray);
         g.drawRect(0, 0, image.getWidth()-1, image.getHeight()-1);
-
-        return image;
     }
 }

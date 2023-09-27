@@ -2,18 +2,19 @@ package org.example;
 
 import org.example.Assets.Asset;
 import org.example.Assets.Cell;
+import org.example.Assets.CircleCover;
 import org.example.Assets.RectangleCover;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class PainterLandscape {
     static private final int sizeCell = 60;
-    static private BufferedImage image;
+    static private BufferedImage map;
     static private ImagePanel imagePanel;
     static private ImageIcon imageIcon;
-    static private Integer widthByCells, heightByCells = 0;
     static private Graphics2D graphics;
 
     public PainterLandscape(ImagePanel imagePanel, ImageIcon imageIcon) {
@@ -23,12 +24,12 @@ public class PainterLandscape {
     }
 
     static private void addObject(Asset a, int x, int y) {
-        graphics.drawImage(a.getImage(), x * sizeCell, y * sizeCell, null);
+        graphics.drawImage(a.getMapObject(), x * sizeCell, y * sizeCell, null);
     }
 
     static public void drawGrid(Integer widthByCells, Integer heightByCells) {
-        image = new BufferedImage(sizeCell * widthByCells, sizeCell * heightByCells, BufferedImage.TYPE_INT_ARGB);
-        graphics = image.createGraphics();
+        map = new BufferedImage(sizeCell * widthByCells, sizeCell * heightByCells, BufferedImage.TYPE_INT_ARGB);
+        graphics = map.createGraphics();
 
         Asset cell = new Cell(sizeCell);
 
@@ -36,17 +37,12 @@ public class PainterLandscape {
             for (int y = 0; y < heightByCells; y++)
                 addObject(cell, x, y);
 
-        graphics.dispose();
-
-        PainterLandscape.widthByCells = widthByCells;
-        PainterLandscape.heightByCells = heightByCells;
-
-        imageIcon.setImage(image);
+        imageIcon.setImage(map);
         imagePanel.repaint(); // сбрасывается генерация
     }
 
-    static public void generate(Integer heightLandscape,
-                                Integer weightLandscape,
+    static public void generate(Integer widthLandscape,
+                                Integer heightLandscape,
                                 Float groundFreq,
                                 Float rectangleCoverFreq,
                                 Float circleCoverFreq,
@@ -57,11 +53,33 @@ public class PainterLandscape {
                                 Integer riverWidth,
                                 Float difficultTerrainFreq,
                                 Integer difficultTerrainRadius) {
-        graphics = image.createGraphics();
-        Asset rectangleCover = new RectangleCover(sizeCell);
-        addObject(rectangleCover, 1, 1); // TODO: 24.09.2023
+        // Заново отрисовываем поле
+        drawGrid(widthLandscape, heightLandscape);
 
-        imageIcon.setImage(image);
+        // Создаём классы объектов
+        Asset cell = new Cell(sizeCell);
+        Asset rectangleCover = new RectangleCover(sizeCell);
+        Asset circleCover = new CircleCover(sizeCell);
+
+        // Создаём матрицу рандомных значений
+        ArrayList<ArrayList<Float>> matrix = NoiseGenerator.getFloatGridEasyVersion(widthLandscape, heightLandscape);
+
+        // Расставляем еденичные объекты согласно матрице
+        for (int i = 0; i < heightLandscape; i++) {
+            for (int j = 0; j < widthLandscape; j++) {
+                if (matrix.get(i).get(j) < groundFreq) {
+                    break;
+                } else if (matrix.get(i).get(j) < groundFreq + rectangleCoverFreq) {
+                    addObject(rectangleCover, i, j);
+                } else if (matrix.get(i).get(j) < groundFreq + rectangleCoverFreq + circleCoverFreq) {
+                    addObject(circleCover, i, j);
+                }
+            }
+        }
+
+        imageIcon.setImage(map);
         imagePanel.repaint();
+
+        graphics.dispose();
     }
 }
