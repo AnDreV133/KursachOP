@@ -1,9 +1,6 @@
 package org.example;
 
-import org.example.Assets.Asset;
-import org.example.Assets.Cell;
-import org.example.Assets.CircleCover;
-import org.example.Assets.RectangleCover;
+import org.example.Assets.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,6 +38,20 @@ public class PainterLandscape {
         imagePanel.repaint(); // сбрасывается генерация
     }
 
+    static public void addObjectsByBoolMatrix(Asset asset, ArrayList<ArrayList<Boolean>> mask,
+                                              boolean[][] objectChecker) {
+        for (int i = 0; i < mask.size(); i++)
+            for (int j = 0; j < mask.get(0).size(); j++)
+                if (objectChecker != null) {
+                    if (mask.get(i).get(j) && !objectChecker[i][j]) {
+                        objectChecker[i][j] = true;
+                        addObject(asset, i, j);
+                    }
+                } else if (mask.get(i).get(j)) {
+                    addObject(asset, i, j);
+                }
+    }
+
     static public void generate(Integer widthLandscape,
                                 Integer heightLandscape,
                                 Float groundFreq,
@@ -56,26 +67,24 @@ public class PainterLandscape {
         // Заново отрисовываем поле
         drawGrid(widthLandscape, heightLandscape);
 
-        // Создаём классы объектов
-        Asset cell = new Cell(sizeCell);
-        Asset rectangleCover = new RectangleCover(sizeCell);
-        Asset circleCover = new CircleCover(sizeCell);
+        boolean[][] mainObjectChecker = new boolean[heightLandscape][widthLandscape];
 
         // Создаём матрицу рандомных значений
-        ArrayList<ArrayList<Float>> matrix = NoiseGenerator.getFloatGridEasyVersion(widthLandscape, heightLandscape);
+        addObjectsByBoolMatrix(new RectangleCover(sizeCell),
+                NoiseGenerator.getMatrixByMathRandomWithRandomIndentation(
+                        widthLandscape, heightLandscape, rectangleCoverFreq, 0.8f),
+                mainObjectChecker);
 
-        // Расставляем еденичные объекты согласно матрице
-        for (int i = 0; i < heightLandscape; i++) {
-            for (int j = 0; j < widthLandscape; j++) {
-                if (matrix.get(i).get(j) < groundFreq) {
-                    break;
-                } else if (matrix.get(i).get(j) < groundFreq + rectangleCoverFreq) {
-                    addObject(rectangleCover, i, j);
-                } else if (matrix.get(i).get(j) < groundFreq + rectangleCoverFreq + circleCoverFreq) {
-                    addObject(circleCover, i, j);
-                }
-            }
-        }
+        addObjectsByBoolMatrix(new CircleCover(sizeCell),
+                NoiseGenerator.getMatrixByMathRandomWithRandomIndentation(
+                        widthLandscape, heightLandscape, circleCoverFreq, 1.0f),
+                mainObjectChecker);
+
+        addObjectsByBoolMatrix(new Area(sizeCell),
+                NoiseGenerator.getMatrixByMathRandomWithRandomIndentation(
+                        widthLandscape, heightLandscape, areaFreq, 0.3f),
+                null);
+
 
         imageIcon.setImage(map);
         imagePanel.repaint();

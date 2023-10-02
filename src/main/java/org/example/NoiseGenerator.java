@@ -1,6 +1,5 @@
 package org.example;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class NoiseGenerator {
@@ -62,12 +61,36 @@ public class NoiseGenerator {
         return ((h & 1) == 0 ? u : -u) + ((h & 2) == 0 ? v : -v);
     }
 
-    static ArrayList<ArrayList<Float>> getFloatGridEasyVersion(int width, int height) {
+    static ArrayList<ArrayList<Boolean>> getMatrixByMathRandomWithRandomIndentation(int width, int height, float freq,
+                                                                                    float surroundingFreq) {
+        boolean[][] rangeMask = new boolean[height][width];
+        ArrayList<ArrayList<Boolean>> res = new ArrayList<>(height);
+        for (int i = 0; i < height; i++) {
+            ArrayList<Boolean> temp = new ArrayList<>(width);
+            for (int j = 0; j < width; j++) {
+                boolean isAdded = Math.random() < freq && !rangeMask[i][j];
+                temp.add(isAdded);
+                if (!isAdded)
+                    continue;
+
+                for (int subI = (i != 0 ? i - 1 : i); subI < (i != height - 1 ? i + 2 : i + 1); subI++)
+                    for (int subJ = (j != 0 ? j - 1 : j); subJ < (j != width - 1 ? j + 2 : j + 1); subJ++)
+                        rangeMask[subI][subJ] = Math.random() < surroundingFreq;
+            }
+            res.add(temp);
+        }
+
+        return res;
+    }
+
+    static ArrayList<ArrayList<Float>> getFloatGridPerlinNoise(int width, int height) {
         ArrayList<ArrayList<Float>> res = new ArrayList<>(width);
         for (int i = 0; i < height; i++) {
             ArrayList<Float> temp = new ArrayList<>(width);
-            for (int j = 0; j < width; j++)
-                temp.add((float) Math.random());
+            for (int j = 0; j < width; j++) {
+                temp.add((float) (noise(j, i, 254)));
+            }
+
             res.add(temp);
         }
 

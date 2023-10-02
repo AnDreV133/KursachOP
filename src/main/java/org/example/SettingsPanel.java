@@ -34,22 +34,18 @@ public class SettingsPanel extends JPanel {
         // Частота появления свободных полей
         groundFreq.setMajorTickSpacing(100);
         groundFreq.setPaintTicks(true);
-        groundFreq.addChangeListener(e -> balanceFreq(groundFreq));
         panel.add(new JLabel("Ground"));
         panel.add(groundFreq);
 
         // Частота появления укрытий
-        rectangleCoverFreq.addChangeListener(e -> balanceFreq(rectangleCoverFreq));
         panel.add(new JLabel("Rectangle Cover"));
         panel.add(rectangleCoverFreq);
 
         // Частота появления укрытий
-        circleCoverFreq.addChangeListener(e -> balanceFreq(circleCoverFreq));
         panel.add(new JLabel("Circle Cover"));
         panel.add(circleCoverFreq);
 
         // Частота появления областей
-        areaFreq.addChangeListener(e -> balanceFreq(areaFreq));
         panel.add(new JLabel("Area"));
         panel.add(areaFreq);
 
@@ -66,7 +62,6 @@ public class SettingsPanel extends JPanel {
         panel.add(new JLabel("Difficult terrain"));
 
         // Частота появления труднопроходимых местностей
-        difficultTerrainFreq.addChangeListener(e -> balanceFreq(difficultTerrainFreq));
         panel.add(difficultTerrainFreq);
 
         // Радиус труднопроходимой местностности
@@ -100,29 +95,26 @@ public class SettingsPanel extends JPanel {
         add(panel);
     }
 
-    public void balanceFreq(JSlider slider) {
-        int sumFreq = groundFreq.getValue()
-                + rectangleCoverFreq.getValue()
-                + circleCoverFreq.getValue()
-                + areaFreq.getValue()
-                + difficultTerrainFreq.getValue();
+//    public void balanceFreq(JSlider slider) {
+//        int sumFreq = groundFreq.getValue()
+//                + rectangleCoverFreq.getValue()
+//                + circleCoverFreq.getValue()
+//                + areaFreq.getValue()
+//                + difficultTerrainFreq.getValue();
+//
+//        if (sumFreq <= 1000)
+//            return;
+//
+//        int delta = (sumFreq - 1000) / 5;
+//
+//        if (!slider.equals(groundFreq)) groundFreq.setValue(groundFreq.getValue() - delta);
+//        if (!slider.equals(rectangleCoverFreq)) rectangleCoverFreq.setValue(rectangleCoverFreq.getValue() - delta);
+//        if (!slider.equals(circleCoverFreq)) circleCoverFreq.setValue(circleCoverFreq.getValue() - delta);
+//        if (!slider.equals(areaFreq)) areaFreq.setValue(areaFreq.getValue() - delta);
+//        if (!slider.equals(difficultTerrainFreq))
+//            difficultTerrainFreq.setValue(difficultTerrainFreq.getValue() - delta);
+//    }
 
-        if (sumFreq <= 1000)
-            return;
-
-        int delta = (sumFreq - 1000) / 5;
-
-        if (!slider.equals(groundFreq)) groundFreq.setValue(groundFreq.getValue() - delta);
-        if (!slider.equals(rectangleCoverFreq)) rectangleCoverFreq.setValue(rectangleCoverFreq.getValue() - delta);
-        if (!slider.equals(circleCoverFreq)) circleCoverFreq.setValue(circleCoverFreq.getValue() - delta);
-        if (!slider.equals(areaFreq)) areaFreq.setValue(areaFreq.getValue() - delta);
-        if (!slider.equals(difficultTerrainFreq))
-            difficultTerrainFreq.setValue(difficultTerrainFreq.getValue() - delta);
-    }
-
-    public void finalBalanceFreqForGenerated() {
-        int delta = 1000 - (0);
-    }
 
     // сделать создание поля с автоматическим обновлением картинки.
 }
