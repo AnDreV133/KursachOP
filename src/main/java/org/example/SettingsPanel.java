@@ -16,7 +16,6 @@ public class SettingsPanel extends JPanel {
     private JSlider areaFreq = new JSlider(0, 1000, 0);
     private JSpinner areaMaxRadius = new JSpinner();
     private JSpinner areaAmountObject = new JSpinner();
-    private int sumFreq = groundFreq.getValue();
 
     public SettingsPanel() {
         JPanel panel = new JPanel();
@@ -102,7 +101,7 @@ public class SettingsPanel extends JPanel {
     }
 
     public void balanceFreq(JSlider slider) {
-        sumFreq = groundFreq.getValue()
+        int sumFreq = groundFreq.getValue()
                 + rectangleCoverFreq.getValue()
                 + circleCoverFreq.getValue()
                 + areaFreq.getValue()
@@ -119,12 +118,10 @@ public class SettingsPanel extends JPanel {
         if (!slider.equals(areaFreq)) areaFreq.setValue(areaFreq.getValue() - delta);
         if (!slider.equals(difficultTerrainFreq))
             difficultTerrainFreq.setValue(difficultTerrainFreq.getValue() - delta);
-
-        System.out.println(sumFreq);
     }
 
     public void finalBalanceFreqForGenerated() {
-
+        int delta = 1000 - (0);
     }
 
     // сделать создание поля с автоматическим обновлением картинки.
