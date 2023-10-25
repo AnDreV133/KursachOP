@@ -4,14 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8df769b4-0205-4217-b9f3-82c0ab31f34e" name="Changes" comment="Создана отрисовка клеточного поля и папка Assets">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Assets/Area.java" afterDir="false" />
+    <list default="true" id="8df769b4-0205-4217-b9f3-82c0ab31f34e" name="Changes" comment="Настроена отрисовка, осталось применение алгоритмов">
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Assets/CircleCover.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Assets/CircleCover.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/NoiseGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/NoiseGenerator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/PainterLandscape.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/PainterLandscape.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/SettingsPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/SettingsPanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,7 +74,14 @@
       <option name="project" value="LOCAL" />
       <updated>1695560814941</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Настроена отрисовка, осталось применение алгоритмов">
+      <created>1696262648588</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1696262648589</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -95,7 +97,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Создана отрисовка клеточного поля и папка Assets" />
-    <option name="LAST_COMMIT_MESSAGE" value="Создана отрисовка клеточного поля и папка Assets" />
+    <MESSAGE value="Настроена отрисовка, осталось применение алгоритмов" />
+    <option name="LAST_COMMIT_MESSAGE" value="Настроена отрисовка, осталось применение алгоритмов" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
