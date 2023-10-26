@@ -9,19 +9,18 @@ import java.util.ArrayList;
 
 public class PainterLandscape {
     static private final int sizeCell = 60;
+    static private final ImageIcon imageIcon = new ImageIcon();
     static private BufferedImage map;
-    static private PanelPainter panelPainter;
-    static private ImageIcon imageIcon;
+    static private ImagePanel imagePanel;
     static private Graphics2D graphics;
-
-    public PainterLandscape(PanelPainter panelPainter, ImageIcon imageIcon) {
-        PainterLandscape.panelPainter = panelPainter;
-        PainterLandscape.imageIcon = imageIcon;
-        drawGrid(5, 5);
-    }
 
     static private void addObject(Asset a, int x, int y) {
         graphics.drawImage(a.getMapObject(), x * sizeCell, y * sizeCell, null);
+    }
+
+    static private void updateImage() {
+        imageIcon.setImage(map);
+        imagePanel.repaint();
     }
 
     static public void drawGrid(Integer widthByCells, Integer heightByCells) {
@@ -34,8 +33,7 @@ public class PainterLandscape {
             for (int y = 0; y < heightByCells; y++)
                 addObject(cell, x, y);
 
-        imageIcon.setImage(map);
-        panelPainter.repaint(); // сбрасывается генерация
+        updateImage();
     }
 
     static public void addObjectsByBoolMatrix(Asset asset, ArrayList<ArrayList<Boolean>> mask,
@@ -86,9 +84,15 @@ public class PainterLandscape {
                 null);
 
 
-        imageIcon.setImage(map);
-        panelPainter.repaint();
+        updateImage();
 
         graphics.dispose();
+    }
+
+    public static ImageIcon getStartGrid(ImagePanel imagePanel) {
+        PainterLandscape.imagePanel = imagePanel;
+        drawGrid(5, 5);
+
+        return imageIcon;
     }
 }

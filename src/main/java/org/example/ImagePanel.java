@@ -5,34 +5,42 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class ImagePanel extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener {
-    private ImageIcon imageIcon = new ImageIcon(); // изображение
-    private int x, y; // координаты изображения
-    private int xMouse, yMouse; // координаты изображения
+    private final ImageIcon imageIcon; // изображение
     private double scale = 1.0; // масштабирование
 
-    public ImagePanel() {
-        new PainterLandscape(this, imageIcon);
+    private final Point imagePlace = new Point();
+    private final Point mousePlace = new Point();
 
-        x = (Main.WIDTH_IMAGE - imageIcon.getIconWidth()) / 2; // начальные координаты изображения по центру панели
-        y = (Main.HEIGHT - imageIcon.getIconHeight()) / 2;
+    public ImagePanel() {
+        imageIcon = PainterLandscape.getStartGrid(this);
+
         addMouseListener(this); // добавляем слушателей событий мыши
         addMouseMotionListener(this);
         addMouseWheelListener(this);
+
+        imagePlace.setXY(
+                (Main.WIDTH_IMAGE - imageIcon.getIconWidth()) / 2,
+                (Main.HEIGHT_IMAGE - imageIcon.getIconHeight()) / 2
+        );
     }
 
     public void paintComponent(Graphics g) { // переопределяем метод отрисовки компонента
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g; // используем 2D графику
         g2d.scale(scale, scale); // масштабируем изображение
-        g2d.drawImage(imageIcon.getImage(), (int) (x / scale), (int) (y / scale), this); // отрисовываем изображение
+        g2d.drawImage(
+                imageIcon.getImage(),
+                (int) (imagePlace.getX() / scale),
+                (int) (imagePlace.getY() / scale),
+                this
+        );
     }
 
     public void mouseClicked(MouseEvent e) {
     } // оставляем пустыми, так как не используем эти события
 
     public void mousePressed(MouseEvent e) { // запоминаем координаты мыши при нажатии
-        xMouse = e.getX();
-        yMouse = e.getY();
+        mousePlace.setXY(e.getX(), e.getY());
     }
 
     public void mouseReleased(MouseEvent e) {
@@ -45,13 +53,14 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
     } // оставляем пустыми
 
     public void mouseDragged(MouseEvent e) { // перемещаем изображение при перетаскивании мыши
-        int dx = e.getX() - xMouse; // смещение по x
-        int dy = e.getY() - yMouse; // смещение по y
-        x += dx;
-        y += dy;
-        repaint();// перерисовываем компонент
-        xMouse = e.getX();
-        yMouse = e.getY();
+        imagePlace.setXY(
+                imagePlace.getX() + e.getX() - mousePlace.getX(),
+                imagePlace.getY() + e.getY() - mousePlace.getY()
+        );
+
+        repaint();
+
+        mousePlace.setXY(e.getX(), e.getY());
     }
 
     public void mouseMoved(MouseEvent e) {
