@@ -17,7 +17,7 @@ public class ThreadPanel extends Thread {
 
         frame.add(splitPane); // добавляем панель на окно
 
-        frame.setSize(Main.WIDTH_IMAGE+Main.WIDTH_SETTINGS, Main.HEIGHT); // задаем размеры окна
+        frame.setSize(Main.WIDTH_IMAGE+Main.WIDTH_SETTINGS, Main.HEIGHT_IMAGE); // задаем размеры окна
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // закрываем окно при нажатии на крестик
         frame.setVisible(true); // делаем окно видимым
     }

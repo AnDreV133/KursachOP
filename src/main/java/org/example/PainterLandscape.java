@@ -10,12 +10,12 @@ import java.util.ArrayList;
 public class PainterLandscape {
     static private final int sizeCell = 60;
     static private BufferedImage map;
-    static private ImagePanel imagePanel;
+    static private PanelPainter panelPainter;
     static private ImageIcon imageIcon;
     static private Graphics2D graphics;
 
-    public PainterLandscape(ImagePanel imagePanel, ImageIcon imageIcon) {
-        PainterLandscape.imagePanel = imagePanel;
+    public PainterLandscape(PanelPainter panelPainter, ImageIcon imageIcon) {
+        PainterLandscape.panelPainter = panelPainter;
         PainterLandscape.imageIcon = imageIcon;
         drawGrid(5, 5);
     }
@@ -35,7 +35,7 @@ public class PainterLandscape {
                 addObject(cell, x, y);
 
         imageIcon.setImage(map);
-        imagePanel.repaint(); // сбрасывается генерация
+        panelPainter.repaint(); // сбрасывается генерация
     }
 
     static public void addObjectsByBoolMatrix(Asset asset, ArrayList<ArrayList<Boolean>> mask,
@@ -87,7 +87,7 @@ public class PainterLandscape {
 
 
         imageIcon.setImage(map);
-        imagePanel.repaint();
+        panelPainter.repaint();
 
         graphics.dispose();
     }

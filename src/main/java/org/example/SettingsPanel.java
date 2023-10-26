@@ -20,7 +20,7 @@ public class SettingsPanel extends JPanel {
     public SettingsPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setSize(Main.WIDTH_SETTINGS, Main.HEIGHT);
+        panel.setSize(Main.WIDTH_SETTINGS, Main.HEIGHT_IMAGE);
 
         // Задание размеров поля
         panel.add(new JLabel("Zone"));
