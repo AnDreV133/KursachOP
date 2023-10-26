@@ -70,12 +70,9 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
         int notches = e.getWheelRotation();
         if (notches < 0) {
             scale *= 1.1; // увеличиваем масштаб на 10%
-        } else {
+        } else if (scale >= 0.1){
             scale /= 1.1; // уменьшаем масштаб на 10%
         }
-
-        if (scale < 0.1)
-            scale = 0.1;
 
         repaint(); // перерисовываем компонент
     }
