@@ -6,10 +6,9 @@ import java.awt.event.*;
 
 public class ImagePanel extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener {
     private final ImageIcon imageIcon; // изображение
-    private double scale = 1.0; // масштабирование
-
     private final Point imagePlace = new Point();
     private final Point mousePlace = new Point();
+    private double scale = 1.0; // масштабирование
 
     public ImagePanel() {
         imageIcon = PainterLandscape.getStartGrid(this);
@@ -70,7 +69,7 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
         int notches = e.getWheelRotation();
         if (notches < 0) {
             scale *= 1.1; // увеличиваем масштаб на 10%
-        } else if (scale >= 0.1){
+        } else if (scale >= 0.1) {
             scale /= 1.1; // уменьшаем масштаб на 10%
         }
 
