@@ -67,21 +67,20 @@ public class PainterLandscape {
 
         boolean[][] mainObjectChecker = new boolean[heightLandscape][widthLandscape];
 
-        // Создаём матрицу рандомных значений
-        addObjectsByBoolMatrix(new RectangleCover(sizeCell),
-                NoiseGenerator.getMatrixByMathRandomWithRandomIndentation(
-                        widthLandscape, heightLandscape, rectangleCoverFreq, 0.8f),
-                mainObjectChecker);
-
-        addObjectsByBoolMatrix(new CircleCover(sizeCell),
-                NoiseGenerator.getMatrixByMathRandomWithRandomIndentation(
-                        widthLandscape, heightLandscape, circleCoverFreq, 1.0f),
-                mainObjectChecker);
-
-        addObjectsByBoolMatrix(new Area(sizeCell),
-                NoiseGenerator.getMatrixByMathRandomWithRandomIndentation(
-                        widthLandscape, heightLandscape, areaFreq, 0.3f),
-                null);
+//        addObjectsByBoolMatrix(new RectangleCover(sizeCell),
+//                NoiseGenerator.getMatrixByMathRandomWithRandomIndentation(
+//                        widthLandscape, heightLandscape, rectangleCoverFreq, 0.8f),
+//                mainObjectChecker);
+//
+//        addObjectsByBoolMatrix(new CircleCover(sizeCell),
+//                NoiseGenerator.getMatrixByMathRandomWithRandomIndentation(
+//                        widthLandscape, heightLandscape, circleCoverFreq, 1.0f),
+//                mainObjectChecker);
+//
+//        addObjectsByBoolMatrix(new Area(sizeCell),
+//                NoiseGenerator.getMatrixByMathRandomWithRandomIndentation(
+//                        widthLandscape, heightLandscape, areaFreq, 0.3f),
+//                null);
 
 
         updateImage();
