@@ -1,21 +1,15 @@
 package org.example;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
 
 public class SettingsPanel extends JPanel {
-    private JSpinner widthLandscape = new JSpinner();
-    private JSpinner heightLandscape = new JSpinner();
-    private JSlider groundFreq = new JSlider(0, 1000, 1000);
-    private JSlider rectangleCoverFreq = new JSlider(0, 1000, 0);
-    private JSlider circleCoverFreq = new JSlider(0, 1000, 0);
-    private JSpinner riverAmount = new JSpinner();
-    private JSpinner riverWidth = new JSpinner();
-    private JSlider difficultTerrainFreq = new JSlider(0, 1000, 0);
-    private JSpinner difficultTerrainRadius = new JSpinner();
-    private JSlider areaFreq = new JSlider(0, 1000, 0);
-    private JSpinner areaMaxRadius = new JSpinner();
-    private JSpinner areaAmountObject = new JSpinner();
+    static private final ImagePanel imagePanel = new ImagePanel();
+    static private final ImageIcon imageIcon = new ImageIcon();
+    static private final JSpinner widthLandscape = new JSpinner();
+    static private final JSpinner heightLandscape = new JSpinner();
+    static private final JSlider blockFreq = new JSlider(0, 1000, 500);
+
 
     public SettingsPanel() {
         JPanel panel = new JPanel();
@@ -23,98 +17,61 @@ public class SettingsPanel extends JPanel {
         panel.setSize(Main.WIDTH_SETTINGS, Main.HEIGHT_IMAGE);
 
         // Задание размеров поля
-        panel.add(new JLabel("Zone"));
-        widthLandscape.setModel(new SpinnerNumberModel(5, 5, 35, 1));
-        heightLandscape.setModel(new SpinnerNumberModel(5, 5, 35, 1));
-        widthLandscape.addChangeListener((e) -> PainterLandscape.drawGrid((Integer) widthLandscape.getValue(), (Integer) heightLandscape.getValue()));
-        heightLandscape.addChangeListener((e) -> PainterLandscape.drawGrid((Integer) widthLandscape.getValue(), (Integer) heightLandscape.getValue()));
+        panel.add(new JLabel("Sizes"));
+        widthLandscape.setModel(new SpinnerNumberModel(30, 10, 100, 1));
         panel.add(widthLandscape);
+
+        heightLandscape.setModel(new SpinnerNumberModel(30, 10, 100, 1));
         panel.add(heightLandscape);
 
-        // Частота появления свободных полей
-        groundFreq.setMajorTickSpacing(100);
-        groundFreq.setPaintTicks(true);
-        panel.add(new JLabel("Ground"));
-        panel.add(groundFreq);
+        JButton btnResize = new JButton();
+        btnResize.addActionListener((l) -> resize());
+        btnResize.setText("Resize");
+        panel.add(btnResize);
 
-        // Частота появления укрытий
-        panel.add(new JLabel("Rectangle Cover"));
-        panel.add(rectangleCoverFreq);
+        panel.add(new JLabel("Block density"));
+        blockFreq.addChangeListener((l)->draw());
+        panel.add(blockFreq);
 
-        // Частота появления укрытий
-        panel.add(new JLabel("Circle Cover"));
-        panel.add(circleCoverFreq);
+        JButton btnRandomDots = new JButton();
+        btnRandomDots.addActionListener((l) -> randomiseDots());
+        btnRandomDots.setText("Interpolate");
+        panel.add(btnRandomDots);
 
-        // Частота появления областей
-        panel.add(new JLabel("Area"));
-        panel.add(areaFreq);
+        JButton btnInterpolate_ = new JButton();
+        btnInterpolate_.addActionListener((l) -> resize());
+        btnInterpolate_.setText("Interpolate");
+        panel.add(btnInterpolate_);
 
-        // Реки
-        panel.add(new JLabel("River"));
-
-        // Количество рек
-        panel.add(riverAmount);
-
-        // Ширина рек
-        panel.add(riverWidth);
-
-        // труднопроходимые местности
-        panel.add(new JLabel("Difficult terrain"));
-
-        // Частота появления труднопроходимых местностей
-        panel.add(difficultTerrainFreq);
-
-        // Радиус труднопроходимой местностности
-        panel.add(difficultTerrainRadius);
-
-        JPanel panelBtnGen = new JPanel();
-
-        JButton btnGenerate = new JButton();
-        btnGenerate.setAction(new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                PainterLandscape.generate(
-                        (Integer) widthLandscape.getValue(),
-                        (Integer) heightLandscape.getValue(),
-                        groundFreq.getValue() / 1000f,
-                        rectangleCoverFreq.getValue() / 1000f,
-                        circleCoverFreq.getValue() / 1000f,
-                        areaFreq.getValue() / 1000f,
-                        (Integer) areaMaxRadius.getValue(),
-                        (Integer) areaAmountObject.getValue(),
-                        (Integer) riverAmount.getValue(),
-                        (Integer) riverWidth.getValue(),
-                        difficultTerrainFreq.getValue() / 1000f,
-                        (Integer) difficultTerrainRadius.getValue());
-            }
-        });
-        btnGenerate.setText("Generate");
-        panelBtnGen.add(btnGenerate);
-
-        panel.add(panelBtnGen);
         add(panel);
     }
 
-//    public void balanceFreq(JSlider slider) {
-//        int sumFreq = groundFreq.getValue()
-//                + rectangleCoverFreq.getValue()
-//                + circleCoverFreq.getValue()
-//                + areaFreq.getValue()
-//                + difficultTerrainFreq.getValue();
-//
-//        if (sumFreq <= 1000)
-//            return;
-//
-//        int delta = (sumFreq - 1000) / 5;
-//
-//        if (!slider.equals(groundFreq)) groundFreq.setValue(groundFreq.getValue() - delta);
-//        if (!slider.equals(rectangleCoverFreq)) rectangleCoverFreq.setValue(rectangleCoverFreq.getValue() - delta);
-//        if (!slider.equals(circleCoverFreq)) circleCoverFreq.setValue(circleCoverFreq.getValue() - delta);
-//        if (!slider.equals(areaFreq)) areaFreq.setValue(areaFreq.getValue() - delta);
-//        if (!slider.equals(difficultTerrainFreq))
-//            difficultTerrainFreq.setValue(difficultTerrainFreq.getValue() - delta);
-//    }
+    static private void updateImage(BufferedImage image) {
+        imageIcon.setImage(image);
+        imagePanel.repaint();
+    }
 
+    private void randomiseDots() {
+        updateImage(PainterLandscape.getRandomDotsImage(blockFreq.getValue() / 1000f));
+    }
 
-    // сделать создание поля с автоматическим обновлением картинки.
+    static private void resize() {
+        updateImage(PainterLandscape.getResizeImage(
+            (Integer) widthLandscape.getValue(),
+            (Integer) heightLandscape.getValue(),
+            blockFreq.getValue() / 1000f
+        ));
+    }
+
+    static private void interpolate() {
+        updateImage(PainterLandscape.getInterpolatedImage(blockFreq.getValue() / 1000f));
+    }
+
+    static private void draw() {
+        updateImage(PainterLandscape.getImage(blockFreq.getValue() / 1000f));
+    }
+
+    static public ImageIcon getImageIcon() {
+        return imageIcon;
+    }
 }

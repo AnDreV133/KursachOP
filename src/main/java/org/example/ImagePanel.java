@@ -11,7 +11,7 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
     private double scale = 1.0; // масштабирование
 
     public ImagePanel() {
-        imageIcon = PainterLandscape.getStartGrid(this);
+        imageIcon = SettingsPanel.getImageIcon();
 
         addMouseListener(this); // добавляем слушателей событий мыши
         addMouseMotionListener(this);

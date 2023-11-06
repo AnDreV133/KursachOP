@@ -2,38 +2,58 @@ package org.example;
 
 import org.example.Assets.*;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class PainterLandscape {
-    static private final int sizeCell = 60;
-    static private final ImageIcon imageIcon = new ImageIcon();
-    static private BufferedImage map;
-    static private ImagePanel imagePanel;
-    static private Graphics2D graphics;
+    static private final int sizeCell = 10;
+    static private final BufferedImage image;
+    static private final Graphics2D graphics;
+    static private final NoiseGenerator generator;
+
+    static {
+        generator = new NoiseGenerator(30, 30);
+        image = new BufferedImage(
+            sizeCell * generator.getWidthInCell(),
+            sizeCell * generator.getHeightInCell(),
+            BufferedImage.TYPE_INT_ARGB
+        );
+        graphics = image.createGraphics();
+    }
 
     static private void addObject(Asset a, int x, int y) {
         graphics.drawImage(a.getMapObject(), x * sizeCell, y * sizeCell, null);
     }
 
-    static private void updateImage() {
-        imageIcon.setImage(map);
-        imagePanel.repaint();
+    static public BufferedImage getResizeImage(int newWidthInCell, int newHeightInCell, float blockFreq) {
+        generator.resize(newWidthInCell, newHeightInCell);
+        return getImage(blockFreq);
     }
 
-    static public void drawGrid(Integer widthByCells, Integer heightByCells) {
-        map = new BufferedImage(sizeCell * widthByCells, sizeCell * heightByCells, BufferedImage.TYPE_INT_ARGB);
-        graphics = map.createGraphics();
+    static public BufferedImage getInterpolatedImage(float blockFreq) {
+        generator.interpolate();
+        return getImage(blockFreq);
+    }
 
-        Asset cell = new Cell(sizeCell);
+    static public BufferedImage getRandomDotsImage(float blockFreq) {
+        generator.getRandomMatrix();
+        return getImage(blockFreq);
+    }
 
-        for (int x = 0; x < widthByCells; x++)
-            for (int y = 0; y < heightByCells; y++)
-                addObject(cell, x, y);
+    static public BufferedImage getImage(float blockFreq) {
+        ArrayList<ArrayList<Float>> matrix = generator.getMap();
 
-        updateImage();
+        for (int y = 0; y < generator.getHeightInCell(); y++) {
+            for (int x = 0; x < generator.getWidthInCell(); x++) {
+                if (matrix.get(y).get(x) > blockFreq)
+                    addObject(new RectangleCover(sizeCell), x, y);
+                else
+                    addObject(new Cell(sizeCell), x, y);
+            }
+        }
+
+        return image;
     }
 
     static public void addObjectsByBoolMatrix(Asset asset, ArrayList<ArrayList<Boolean>> mask,
@@ -50,48 +70,5 @@ public class PainterLandscape {
                 }
     }
 
-    static public void generate(Integer widthLandscape,
-                                Integer heightLandscape,
-                                Float groundFreq,
-                                Float rectangleCoverFreq,
-                                Float circleCoverFreq,
-                                Float areaFreq,
-                                Integer areaMaxRadius,
-                                Integer areaAmountObjects,
-                                Integer riverAmount,
-                                Integer riverWidth,
-                                Float difficultTerrainFreq,
-                                Integer difficultTerrainRadius) {
-        // Заново отрисовываем поле
-        drawGrid(widthLandscape, heightLandscape);
-
-        boolean[][] mainObjectChecker = new boolean[heightLandscape][widthLandscape];
-
-//        addObjectsByBoolMatrix(new RectangleCover(sizeCell),
-//                NoiseGenerator.getMatrixByMathRandomWithRandomIndentation(
-//                        widthLandscape, heightLandscape, rectangleCoverFreq, 0.8f),
-//                mainObjectChecker);
-//
-//        addObjectsByBoolMatrix(new CircleCover(sizeCell),
-//                NoiseGenerator.getMatrixByMathRandomWithRandomIndentation(
-//                        widthLandscape, heightLandscape, circleCoverFreq, 1.0f),
-//                mainObjectChecker);
-//
-//        addObjectsByBoolMatrix(new Area(sizeCell),
-//                NoiseGenerator.getMatrixByMathRandomWithRandomIndentation(
-//                        widthLandscape, heightLandscape, areaFreq, 0.3f),
-//                null);
-
-
-        updateImage();
-
-        graphics.dispose();
-    }
-
-    public static ImageIcon getStartGrid(ImagePanel imagePanel) {
-        PainterLandscape.imagePanel = imagePanel;
-        drawGrid(5, 5);
-
-        return imageIcon;
-    }
+    // gr.dispose
 }

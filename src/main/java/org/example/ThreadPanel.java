@@ -7,9 +7,9 @@ public class ThreadPanel extends Thread {
     public void run() {
         JFrame frame = new JFrame("Image Panel"); // создаем окно с заголовком "Image Panel"
 
-        ImagePanel imagePanel = new ImagePanel(); // создаем панель с изображением
-
         SettingsPanel settingsPanel = new SettingsPanel();
+
+        ImagePanel imagePanel = new ImagePanel(); // создаем панель с изображением
 
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, imagePanel, settingsPanel);
         splitPane.setDividerLocation(Main.WIDTH_IMAGE);

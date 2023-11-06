@@ -25,22 +25,38 @@ public class NoiseGenerator {
         return map;
     }
 
-    public void resetSizes(int newHeightInCell, int newWidthInCell) {
-        updateMatrixBySizes(newHeightInCell, newWidthInCell);
-
-        heightInCell = newHeightInCell;
-        widthInCell = newWidthInCell;
+    public int getHeightInCell() {
+        return heightInCell;
     }
 
-    private void updateMatrixBySizes(int newHeightInCell, int newWidthInCell) {
-        for (int y = 0; y < heightInCell; ++y)
-            for (int x = 0; x < newWidthInCell - widthInCell; ++x)
-                map.get(y).add(0.0f);
+    public int getWidthInCell() {
+        return widthInCell;
+    }
 
-        for (int y = 0; y < newHeightInCell - heightInCell; ++y) {
+    public void resize(int newWidthInCell, int newHeightInCell) {
+        updateMatrixBySizes(newWidthInCell, newHeightInCell);
+
+        widthInCell = newWidthInCell;
+        heightInCell = newHeightInCell;
+    }
+
+    private void updateMatrixBySizes(int newWidthInCell, int newHeightInCell) {
+        for (int y = 0; y < heightInCell; ++y)
+            for (int i = 0; i < newWidthInCell - widthInCell; ++i)
+                map.get(y).add(
+                    (map.get(y != 0 ? y - 1 : 0).get(widthInCell + i - 1)
+                        + map.get(y).get(widthInCell + i - 1)
+                        + map.get(y != heightInCell - 1 ? y + 1 : heightInCell - 1).get(widthInCell + i - 1)) / 3
+                );
+
+        for (int i = 0; i < newHeightInCell - heightInCell; ++i) {
             ArrayList<Float> buf = new ArrayList<>();
             for (int x = 0; x < newWidthInCell; x++) {
-                buf.add(0.0f);
+                buf.add(
+                    (map.get(heightInCell + i - 1).get(x != 0 ? x - 1 : 0)
+                        + map.get(heightInCell + i - 1).get(x)
+                        + map.get(heightInCell + i - 1).get(x != widthInCell - 1 ? x + 1 : widthInCell - 1)) / 3
+                );
             }
             map.add(buf);
         }
