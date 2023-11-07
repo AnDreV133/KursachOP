@@ -3,23 +3,25 @@ package org.example;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 
-public class ImagePanel extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener {
-    private final ImageIcon imageIcon; // изображение
+public class ImageFrame extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener {
+    private final ImageIcon imageIcon = new ImageIcon();
     private final Point imagePlace = new Point();
     private final Point mousePlace = new Point();
+
     private double scale = 1.0; // масштабирование
 
-    public ImagePanel() {
-        imageIcon = SettingsPanel.getImageIcon();
+    public ImageFrame(int width, int height) {
+        updateImage(PainterLandscape.getEmptyImage(0.42f));
 
         addMouseListener(this); // добавляем слушателей событий мыши
         addMouseMotionListener(this);
         addMouseWheelListener(this);
 
         imagePlace.setXY(
-                (Main.WIDTH_IMAGE - imageIcon.getIconWidth()) / 2,
-                (Main.HEIGHT_IMAGE - imageIcon.getIconHeight()) / 2
+            (width - imageIcon.getIconWidth()) / 2,
+            (height - imageIcon.getIconHeight()) / 2
         );
     }
 
@@ -28,10 +30,10 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
         Graphics2D g2d = (Graphics2D) g; // используем 2D графику
         g2d.scale(scale, scale); // масштабируем изображение
         g2d.drawImage(
-                imageIcon.getImage(),
-                (int) (imagePlace.getX() / scale),
-                (int) (imagePlace.getY() / scale),
-                this
+            imageIcon.getImage(),
+            (int) (imagePlace.getX() / scale),
+            (int) (imagePlace.getY() / scale),
+            this
         );
     }
 
@@ -53,8 +55,8 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
 
     public void mouseDragged(MouseEvent e) { // перемещаем изображение при перетаскивании мыши
         imagePlace.setXY(
-                imagePlace.getX() + e.getX() - mousePlace.getX(),
-                imagePlace.getY() + e.getY() - mousePlace.getY()
+            imagePlace.getX() + e.getX() - mousePlace.getX(),
+            imagePlace.getY() + e.getY() - mousePlace.getY()
         );
 
         repaint();
@@ -74,5 +76,10 @@ public class ImagePanel extends JPanel implements MouseListener, MouseMotionList
         }
 
         repaint(); // перерисовываем компонент
+    }
+
+    public void updateImage(BufferedImage image) {
+        imageIcon.setImage(image);
+        repaint();
     }
 }

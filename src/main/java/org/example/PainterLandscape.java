@@ -28,20 +28,25 @@ public class PainterLandscape {
 
     static public BufferedImage getResizeImage(int newWidthInCell, int newHeightInCell, float blockFreq) {
         generator.resize(newWidthInCell, newHeightInCell);
-        return getImage(blockFreq);
+        return getImageFromMap(blockFreq);
     }
 
     static public BufferedImage getInterpolatedImage(float blockFreq) {
         generator.interpolate();
-        return getImage(blockFreq);
+        return getImageFromMap(blockFreq);
     }
 
     static public BufferedImage getRandomDotsImage(float blockFreq) {
         generator.getRandomMatrix();
-        return getImage(blockFreq);
+        return getImageFromMap(blockFreq);
     }
 
-    static public BufferedImage getImage(float blockFreq) {
+    static public BufferedImage getEmptyImage(float blockFreq) {
+        generator.getEmptyMatrix();
+        return getImageFromMap(blockFreq);
+    }
+
+    static public BufferedImage getImageFromMap(float blockFreq) {
         ArrayList<ArrayList<Float>> matrix = generator.getMap();
 
         for (int y = 0; y < generator.getHeightInCell(); y++) {
@@ -68,6 +73,10 @@ public class PainterLandscape {
                 } else if (mask.get(i).get(j)) {
                     addObject(asset, i, j);
                 }
+    }
+
+    static public BufferedImage getImage() {
+        return image;
     }
 
     // gr.dispose

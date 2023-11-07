@@ -18,9 +18,9 @@ public class NoiseGenerator {
     }
 
     public ArrayList<ArrayList<Float>> getMap() {
-        if (map.isEmpty()) {
-            getEmptyMatrix();
-        }
+//        if (map.isEmpty()) {
+//            getEmptyMatrix();
+//        }
 
         return map;
     }
@@ -34,15 +34,8 @@ public class NoiseGenerator {
     }
 
     public void resize(int newWidthInCell, int newHeightInCell) {
-        updateMatrixBySizes(newWidthInCell, newHeightInCell);
-
-        widthInCell = newWidthInCell;
-        heightInCell = newHeightInCell;
-    }
-
-    private void updateMatrixBySizes(int newWidthInCell, int newHeightInCell) {
-        for (int y = 0; y < heightInCell; ++y)
-            for (int i = 0; i < newWidthInCell - widthInCell; ++i)
+        for (int i = 0; i < newWidthInCell - widthInCell; ++i)
+            for (int y = 0; y < heightInCell; ++y)
                 map.get(y).add(
                     (map.get(y != 0 ? y - 1 : 0).get(widthInCell + i - 1)
                         + map.get(y).get(widthInCell + i - 1)
@@ -60,6 +53,9 @@ public class NoiseGenerator {
             }
             map.add(buf);
         }
+
+        widthInCell = newWidthInCell;
+        heightInCell = newHeightInCell;
     }
 
     public ArrayList<ArrayList<Float>> getEmptyMatrix() {
