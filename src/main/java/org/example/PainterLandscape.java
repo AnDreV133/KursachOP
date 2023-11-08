@@ -28,6 +28,7 @@ public class PainterLandscape {
 
     static public BufferedImage getResizeImage(int newWidthInCell, int newHeightInCell, float blockFreq) {
         generator.resize(newWidthInCell, newHeightInCell);
+
         return getImageFromMap(blockFreq);
     }
 

@@ -18,9 +18,6 @@ public class NoiseGenerator {
     }
 
     public ArrayList<ArrayList<Float>> getMap() {
-//        if (map.isEmpty()) {
-//            getEmptyMatrix();
-//        }
 
         return map;
     }

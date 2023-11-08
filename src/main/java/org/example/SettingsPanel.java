@@ -14,8 +14,6 @@ public class SettingsPanel {
     private final ImageFrame imageFrame = new ImageFrame(WIDTH_IMAGE_SPACE, HEIGHT_SPACE);
 
     public SettingsPanel() {
-
-
         JPanel settingsFrame = new JPanel();
         settingsFrame.setLayout(new BoxLayout(settingsFrame, BoxLayout.Y_AXIS));
         settingsFrame.setSize(WIDTH_SETTINGS_SPACE, HEIGHT_SPACE);
