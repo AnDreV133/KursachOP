@@ -8,7 +8,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/NoiseGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/NoiseGenerator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/PainterLandscape.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/PainterLandscape.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/SettingsPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/SettingsPanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -144,21 +143,5 @@
     <MESSAGE value="wrote interpolation and helpful methods" />
     <MESSAGE value="maked refactor, little optimisation" />
     <option name="LAST_COMMIT_MESSAGE" value="maked refactor, little optimisation" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/org/example/ImageFrame.java</url>
-          <line>29</line>
-          <option name="timeStamp" value="24" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/org/example/ImageFrame.java</url>
-          <line>81</line>
-          <option name="timeStamp" value="26" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

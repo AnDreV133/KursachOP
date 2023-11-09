@@ -45,7 +45,7 @@ public class NoiseGenerator {
                 buf.add(
                     (map.get(heightInCell + i - 1).get(x != 0 ? x - 1 : 0)
                         + map.get(heightInCell + i - 1).get(x)
-                        + map.get(heightInCell + i - 1).get(x != widthInCell - 1 ? x + 1 : widthInCell - 1)) / 3
+                        + map.get(heightInCell + i - 1).get(x != newWidthInCell - 1 ? x + 1 : widthInCell - 1)) / 3
                 );
             }
             map.add(buf);
@@ -61,7 +61,7 @@ public class NoiseGenerator {
             for (int x = 0; x < widthInCell; x++) {
                 buf.add(0.0f);
             }
-            map.add(buf);
+            addOrUpdateStrokeOfMap(y, buf);
         }
 
         return map;
@@ -73,29 +73,29 @@ public class NoiseGenerator {
             for (int x = 0; x < widthInCell; x++) {
                 buf.add((float) Math.random());
             }
-            map.add(buf);
+            addOrUpdateStrokeOfMap(y, buf);
         }
 
         return map;
     }
 
-    public ArrayList<ArrayList<Float>> interpolate() {
-        float[][] tempMap = new float[widthInCell][heightInCell];
+    public ArrayList<ArrayList<Float>> getInterpolateMatrix() {
+        float[][] tempMap = new float[heightInCell][widthInCell];
         for (int x = 1; x < widthInCell - 1; ++x)
             for (int y = 1; y < heightInCell - 1; ++y) {
-                tempMap[x][y] = (map.get(x - 1).get(y)
-                    + map.get(x - 1).get(y - 1) + map.get(x).get(y - 1)
-                    + map.get(x + 1).get(y - 1) + map.get(x + 1).get(y)
-                    + map.get(x + 1).get(y + 1) + map.get(x).get(y + 1)
-                    + map.get(x - 1).get(y + 1) + map.get(x).get(y)) / 9;
+                tempMap[y][x] = (map.get(y).get(x - 1)
+                    + map.get(y - 1).get(x - 1) + map.get(y - 1).get(x)
+                    + map.get(y - 1).get(x + 1) + map.get(y).get(x + 1)
+                    + map.get(y + 1).get(x + 1) + map.get(y + 1).get(x)
+                    + map.get(y + 1).get(x - 1) + map.get(y).get(x)) / 9;
             }
 
         for (int y = 0; y < heightInCell; y++) {
             ArrayList<Float> buf = new ArrayList<>();
             for (int x = 0; x < widthInCell; x++) {
-                buf.add(tempMap[x][y]);
+                buf.add(tempMap[y][x]);
             }
-            map.set(y, buf);
+            addOrUpdateStrokeOfMap(y, buf);
         }
 
         return map;
@@ -121,5 +121,13 @@ public class NoiseGenerator {
         }
 
         return res;
+    }
+
+    private void addOrUpdateStrokeOfMap(int index, ArrayList<Float> val) {
+        if (index < map.size()) {
+            map.set(index, val);
+        } else {
+            map.add(val);
+        }
     }
 }

@@ -8,19 +8,10 @@ import java.util.ArrayList;
 
 public class PainterLandscape {
     static private final int sizeCell = 10;
-    static private final BufferedImage image;
-    static private final Graphics2D graphics;
-    static private final NoiseGenerator generator;
-
-    static {
-        generator = new NoiseGenerator(30, 30);
-        image = new BufferedImage(
-            sizeCell * generator.getWidthInCell(),
-            sizeCell * generator.getHeightInCell(),
-            BufferedImage.TYPE_INT_ARGB
-        );
-        graphics = image.createGraphics();
-    }
+    static private final NoiseGenerator generator = new NoiseGenerator(30, 30);
+    ;
+    static private BufferedImage image;
+    static private Graphics2D graphics;
 
     static private void addObject(Asset a, int x, int y) {
         graphics.drawImage(a.getMapObject(), x * sizeCell, y * sizeCell, null);
@@ -28,12 +19,11 @@ public class PainterLandscape {
 
     static public BufferedImage getResizeImage(int newWidthInCell, int newHeightInCell, float blockFreq) {
         generator.resize(newWidthInCell, newHeightInCell);
-
         return getImageFromMap(blockFreq);
     }
 
     static public BufferedImage getInterpolatedImage(float blockFreq) {
-        generator.interpolate();
+        generator.getInterpolateMatrix();
         return getImageFromMap(blockFreq);
     }
 
@@ -48,6 +38,13 @@ public class PainterLandscape {
     }
 
     static public BufferedImage getImageFromMap(float blockFreq) {
+        image = new BufferedImage(
+            sizeCell * generator.getWidthInCell(),
+            sizeCell * generator.getHeightInCell(),
+            BufferedImage.TYPE_INT_ARGB
+        );
+        graphics = image.createGraphics();
+
         ArrayList<ArrayList<Float>> matrix = generator.getMap();
 
         for (int y = 0; y < generator.getHeightInCell(); y++) {
@@ -79,6 +76,4 @@ public class PainterLandscape {
     static public BufferedImage getImage() {
         return image;
     }
-
-    // gr.dispose
 }
