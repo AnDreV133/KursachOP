@@ -31,22 +31,12 @@ public class NoiseGenerator {
     }
 
     public void resize(int newWidthInCell, int newHeightInCell) {
-        for (int i = 0; i < newWidthInCell - widthInCell; ++i)
-            for (int y = 0; y < heightInCell; ++y)
-                map.get(y).add(
-                    (map.get(y != 0 ? y - 1 : 0).get(widthInCell + i - 1)
-                        + map.get(y).get(widthInCell + i - 1)
-                        + map.get(y != heightInCell - 1 ? y + 1 : heightInCell - 1).get(widthInCell + i - 1)) / 3
-                );
+        map.clear();
 
-        for (int i = 0; i < newHeightInCell - heightInCell; ++i) {
+        for (int y = 0; y < newHeightInCell; y++) {
             ArrayList<Float> buf = new ArrayList<>();
             for (int x = 0; x < newWidthInCell; x++) {
-                buf.add(
-                    (map.get(heightInCell + i - 1).get(x != 0 ? x - 1 : 0)
-                        + map.get(heightInCell + i - 1).get(x)
-                        + map.get(heightInCell + i - 1).get(x != newWidthInCell - 1 ? x + 1 : widthInCell - 1)) / 3
-                );
+                buf.add(1.0f);
             }
             map.add(buf);
         }
@@ -59,7 +49,7 @@ public class NoiseGenerator {
         for (int y = 0; y < heightInCell; y++) {
             ArrayList<Float> buf = new ArrayList<>();
             for (int x = 0; x < widthInCell; x++) {
-                buf.add(0.0f);
+                buf.add(1.0f);
             }
             addOrUpdateStrokeOfMap(y, buf);
         }

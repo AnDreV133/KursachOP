@@ -7,14 +7,13 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class PainterLandscape {
-    static private final int sizeCell = 10;
-    static private final NoiseGenerator generator = new NoiseGenerator(30, 30);
-    ;
+    static private final int SIZE_CELL = 12;
+    static private final NoiseGenerator generator = new NoiseGenerator(SettingsPanel.DEFAULT_SIZE_MAP, SettingsPanel.DEFAULT_SIZE_MAP);
     static private BufferedImage image;
     static private Graphics2D graphics;
 
     static private void addObject(Asset a, int x, int y) {
-        graphics.drawImage(a.getMapObject(), x * sizeCell, y * sizeCell, null);
+        graphics.drawImage(a.getMapObject(), x * SIZE_CELL, y * SIZE_CELL, null);
     }
 
     static public BufferedImage getResizeImage(int newWidthInCell, int newHeightInCell, float blockFreq) {
@@ -32,15 +31,15 @@ public class PainterLandscape {
         return getImageFromMap(blockFreq);
     }
 
-    static public BufferedImage getEmptyImage(float blockFreq) {
+    static public BufferedImage getEmptyImage() {
         generator.getEmptyMatrix();
-        return getImageFromMap(blockFreq);
+        return getImageFromMap(0.1f);
     }
 
     static public BufferedImage getImageFromMap(float blockFreq) {
         image = new BufferedImage(
-            sizeCell * generator.getWidthInCell(),
-            sizeCell * generator.getHeightInCell(),
+            SIZE_CELL * generator.getWidthInCell(),
+            SIZE_CELL * generator.getHeightInCell(),
             BufferedImage.TYPE_INT_ARGB
         );
         graphics = image.createGraphics();
@@ -49,10 +48,10 @@ public class PainterLandscape {
 
         for (int y = 0; y < generator.getHeightInCell(); y++) {
             for (int x = 0; x < generator.getWidthInCell(); x++) {
-                if (matrix.get(y).get(x) > blockFreq)
-                    addObject(new RectangleCover(sizeCell), x, y);
+                if (matrix.get(y).get(x) < blockFreq)
+                    addObject(new ShadedCell(SIZE_CELL), x, y);
                 else
-                    addObject(new Cell(sizeCell), x, y);
+                    addObject(new Cell(SIZE_CELL), x, y);
             }
         }
 

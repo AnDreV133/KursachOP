@@ -4,10 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8df769b4-0205-4217-b9f3-82c0ab31f34e" name="Changes" comment="maked refactor, little optimisation">
+    <list default="true" id="8df769b4-0205-4217-b9f3-82c0ab31f34e" name="Changes" comment="fix out of bound exceptions">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Assets/ShadedCell.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/KeyCheckerForMode.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/KeyCheckerForObjects.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/ImageFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/ImageFrame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/NoiseGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/NoiseGenerator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/PainterLandscape.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/PainterLandscape.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/SettingsPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/SettingsPanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -106,7 +111,14 @@
       <option name="project" value="LOCAL" />
       <updated>1699389225212</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="fix out of bound exceptions">
+      <created>1699506167035</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1699506167035</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -142,6 +154,7 @@
     <MESSAGE value="Настроена отрисовка, осталось применение алгоритмов" />
     <MESSAGE value="wrote interpolation and helpful methods" />
     <MESSAGE value="maked refactor, little optimisation" />
-    <option name="LAST_COMMIT_MESSAGE" value="maked refactor, little optimisation" />
+    <MESSAGE value="fix out of bound exceptions" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix out of bound exceptions" />
   </component>
 </project>

@@ -9,15 +9,20 @@ public class ImageFrame extends JPanel implements MouseListener, MouseMotionList
     private final ImageIcon imageIcon = new ImageIcon();
     private final Point imagePlace = new Point();
     private final Point mousePlace = new Point();
-
-    private double scale = 1.0; // масштабирование
+    private double scale = 1.0;
 
     public ImageFrame(int width, int height) {
-        updateImage(PainterLandscape.getEmptyImage(0.42f));
+        updateImage(PainterLandscape.getEmptyImage());
 
         addMouseListener(this); // добавляем слушателей событий мыши
         addMouseMotionListener(this);
         addMouseWheelListener(this);
+        addKeyListener(new KeyCheckerForMode());
+        addKeyListener(new KeyCheckerForObjects());
+
+        requestFocus();
+
+//        JLabel objectType
 
         imagePlace.setXY(
             (width - imageIcon.getIconWidth()) / 2,
@@ -38,10 +43,12 @@ public class ImageFrame extends JPanel implements MouseListener, MouseMotionList
     }
 
     public void mouseClicked(MouseEvent e) {
-    } // оставляем пустыми, так как не используем эти события
+        requestFocusInWindow();
+    }
 
     public void mousePressed(MouseEvent e) { // запоминаем координаты мыши при нажатии
-        mousePlace.setXY(e.getX(), e.getY());
+        if (KeyCheckerForMode.isAltPressed)
+            mousePlace.setXY(e.getX(), e.getY());
     }
 
     public void mouseReleased(MouseEvent e) {
@@ -54,28 +61,32 @@ public class ImageFrame extends JPanel implements MouseListener, MouseMotionList
     } // оставляем пустыми
 
     public void mouseDragged(MouseEvent e) { // перемещаем изображение при перетаскивании мыши
-        imagePlace.setXY(
-            imagePlace.getX() + e.getX() - mousePlace.getX(),
-            imagePlace.getY() + e.getY() - mousePlace.getY()
-        );
+        if (KeyCheckerForMode.isAltPressed) {
+            imagePlace.setXY(
+                imagePlace.getX() + e.getX() - mousePlace.getX(),
+                imagePlace.getY() + e.getY() - mousePlace.getY()
+            );
 
-        repaint();
+            repaint();
 
-        mousePlace.setXY(e.getX(), e.getY());
+            mousePlace.setXY(e.getX(), e.getY());
+        }
     }
 
     public void mouseMoved(MouseEvent e) {
     } // оставляем пустыми
 
     public void mouseWheelMoved(MouseWheelEvent e) { // масштабируем изображение при вращении колесика мыши
-        int notches = e.getWheelRotation();
-        if (notches < 0) {
-            scale *= 1.1; // увеличиваем масштаб на 10%
-        } else if (scale >= 0.1) {
-            scale /= 1.1; // уменьшаем масштаб на 10%
-        }
+        if (KeyCheckerForMode.isAltPressed) {
+            int notches = e.getWheelRotation();
+            if (notches < 0) {
+                scale *= 1.1; // увеличиваем масштаб на 10%
+            } else if (scale >= 0.1) {
+                scale /= 1.1; // уменьшаем масштаб на 10%
+            }
 
-        repaint(); // перерисовываем компонент
+            repaint(); // перерисовываем компонент
+        }
     }
 
     public void updateImage(BufferedImage image) {
